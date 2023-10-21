@@ -1,0 +1,6 @@
+.vscode/*
+*.o
+ram
+
+# principalement valgrind.out et valgrind_suppressions
+valgrind*

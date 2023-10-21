@@ -1,0 +1,20 @@
+# Programme qui calcule la partie entière de la moyenne
+
+# Initialisation
+LOAD #0 ; ACC ← 0
+STORE 1 ; R[1] ← ACC   
+STORE 2 ; R[2] ← ACC  
+
+# Boucle de lecture tq != 0
+READ    ; ACC ← ENTREE[i++]
+JUMZ 9  ; SI ACC = 0 SAUTER A L'INSTRUCTION #8
+ADD 2   ; ACC ← ACC + R[2]
+STORE 2 ; R[2] ← ACC
+INC 1   ; R[1] ← R[1] + 1
+JUMP 3  ; SAUTER A L'INSTRUCTION #2
+
+# Calcul de la moyenne et affichage
+LOAD 2  ; ACC ← R[2]
+DIV 1   ; ACC ← ACC / R[1]
+WRITE   ; SORTIE[j++] ← ACC
+STOP    ; ARRET
