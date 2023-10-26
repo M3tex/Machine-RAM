@@ -17,10 +17,10 @@ void skip_spaces(FILE *f)
     char tmp;
     do {
         tmp = fgetc(f);
-    } while (tmp == ' ');
+    } while ((tmp == ' ' || tmp == '\t') && !feof(f));
 
     /* Car on est allé 1 caractère trop loin */
-    fseek(f, -1, SEEK_CUR);
+    if (!feof(f)) fseek(f, -1, SEEK_CUR);
 }
 
 
@@ -35,7 +35,7 @@ void skip_line(FILE *f)
     char tmp;
     do {
         tmp = fgetc(f);
-    } while (tmp != EOF && tmp != '\n');
+    } while (!feof(f) && tmp != '\n');
 }
 
 

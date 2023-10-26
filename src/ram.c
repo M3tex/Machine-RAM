@@ -156,9 +156,11 @@ int lire_fichier(char *nom, instruction *result)
         }
 
         /* Pour supporter les lignes vides (et commentaires) */
+        skip_spaces(f);
         tmp = fgetc(f);
         if (!isalpha(tmp))
         {
+            printf("Ligne %d on lit '%c'\n", i, tmp);
             if (tmp != '\n') skip_line(f);
             continue;
         }
