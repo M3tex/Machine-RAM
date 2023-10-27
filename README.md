@@ -15,6 +15,9 @@ avec `x1, x2, ..., xn` les entiers à placer sur la bande d'entrée
 Le `fichier.ram` doit respecter la syntaxe suivante:
 - une ligne ne doit pas faire + de 1024 caractères
 - une seule instruction par ligne
+- une instruction peut-être précédée de plusieurs espaces/indentations,
+  afin de rendre possible une forme d'indentation (pour rendre + lisible
+  les blocs de JUMP par exemple)
 - le type d'adressage doit être séparé de l'instruction par au moins un
   espace (il peut y en avoir plusieurs).
 - l'adresse peut-être collée au type d'adressage, ou bien séparée de ce
