@@ -115,7 +115,6 @@ void free_ram(ram *r)
  * 
  * Le fichier doit respecter la syntaxe suivante:
  *  - une seule instruction par ligne
- *  - l'instruction ne doit pas être précedée d'espaces
  *  - le type d'adressage doit être séparé de l'instruction par au moins
  *    un espace (il peut y en avoir +).
  *  - l'adresse peut-être séparée du type d'adressage par 0, 1 ou 
@@ -160,7 +159,6 @@ int lire_fichier(char *nom, instruction *result)
         tmp = fgetc(f);
         if (!isalpha(tmp))
         {
-            printf("Ligne %d on lit '%c'\n", i, tmp);
             if (tmp != '\n') skip_line(f);
             continue;
         }
