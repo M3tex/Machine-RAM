@@ -8,9 +8,10 @@ La partie d'entrée sortie est gérée avec la librairie [`ncurses`][ncurses]
 
 
 
-Utilisation de la commande: `ram [-e "x1, x2, ..., xn"] fichier.ram`\
+Utilisation: `ram [-hm] [-e "x1, x2, ..., xn"] fichier.ram`\
 avec `x1, x2, ..., xn` les entiers à placer sur la bande d'entrée
-(peuvent également être séparés simplement par des espaces).\
+(peuvent également être séparés simplement par des espaces).
+
 Le `fichier.ram` doit respecter la syntaxe suivante:
 - une ligne ne doit pas faire + de 1024 caractères
 - une seule instruction par ligne

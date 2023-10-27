@@ -44,7 +44,8 @@
 void init_ui();
 void update_ui(ram *r, WINDOW *wi, WINDOW *wm, liste cpy_e);
 
-void launch(char *e, char *filename);
+void launch(ram *r);
+void launch_minimal(ram *r);
 
 void draw_status_bar();
 void draw_instr_window(WINDOW *w, ram *r);

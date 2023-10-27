@@ -61,7 +61,8 @@ void check_alloc(void *ptr)
  * @brief Quitte le programme en s'assurant que le terminal quitte le
  * raw-mode.
  * 
- * Pour la partie affichage: https://stackoverflow.com/a/54879016
+ * Pour la partie affichage: https://stackoverflow.com/a/54879016 et
+ * https://sourceware.org/git?p=glibc.git;a=blob_plain;f=stdio-common/printf.c;hb=HEAD
  * 
  * @param exit_code 
  */
@@ -76,27 +77,43 @@ void quit(int exit_code, int use_perror, char *fmt, ...)
     {
         va_list arglist;
         va_start(arglist, fmt);
-
-        int length = vsnprintf(NULL, 0, fmt, arglist) + 1;
-        char *buffer = malloc(length * sizeof *buffer); 
-        vsnprintf(buffer, length, fmt, arglist);
+        vfprintf(stdout, fmt, arglist);
         va_end(arglist);
-
-        puts(buffer);
-        free(buffer);
+        printf("\n");
     }
     exit(exit_code);
 }
 
 
 
-
+/**
+ * @brief Affiche les informations sur l'utilisation de la commande.
+ * 
+ */
 void print_help()
 {
-    printf("Utilisation:\n");
-    printf("ram [-e \"x1, x2, ..., xn\"] nom_fichier.ram\n");
+    printf("Utilisation: ");
+    printf("ram [-hm] [-e bande-entree] nom_fichier.ram\n\n");
 
-    // printf("Avec x1, x2, ..., xn les n entiers de la bande d'entrée ");
-    // printf("(à noter qu'ils peuvent également être séparés par des ");
-    // printf("espaces)\n");
+    printf("-h Affiche cette aide\n");
+    printf("-m Affichage 'minimal' (ACC + bande de sortie)\n");
+
+    printf("-e Pour spécifier le contenu de la bande d'entrée\n");
+    printf("Les entiers de la bande d'entrée doivent être ");
+    printf("séparés par des espaces ou des virgules.\n");
+    printf("Par exemple: ram -e '10, 12, 9, 17, 0' moyenne.ram\n\n");
+
+    printf("Le fichier.ram doit respecter la syntaxe suivante:\n");
+    printf("- une ligne ne doit pas faire + de 1024 caractères\n");
+    printf("- une seule instruction par ligne\n");
+    printf("- le type d'adressage doit être séparé de l'instruction par"
+           " au moins un espace (il peut y en avoir plusieurs)\n");
+    printf("- l'adresse peut-être collée au type d'adressage, ou bien "
+           "séparée de ce dernier par un ou plusieurs espaces\n");
+    printf("- tout ce qui est situé à droite d'un `;` sur la même ligne" 
+           " qu'une instruction est un commentaire\n");
+    printf("- il peut y avoir des lignes vides\n");
+    printf("- toutes les lignes commençant par un caractère "
+           "non-alphabétique autre qu'un espace ou une tabulation est "
+           "un commentaire\n");
 }

@@ -222,7 +222,6 @@ void draw_mem_window(WINDOW *w, ram *r)
         mvwprintw(w, 1, pad + 1 + 7, "%d", (r -> memoire)[0]);
     } 
 
-
     /*
      * On affiche seulement les registres initialisés. cpt permet de
      * compter le nombre de registres initialisés.
@@ -254,7 +253,6 @@ void draw_mem_window(WINDOW *w, ram *r)
 
 void draw_bands(ram *r, liste l, int is_entree)
 {
-    /* Bande d'entrée. Les valeurs déjà lues sont grisées */
     char *l_str = list_to_str(l);
 
     int i;
@@ -265,9 +263,10 @@ void draw_bands(ram *r, liste l, int is_entree)
     size_t len = strlen(l_str);
 
     int y = is_entree ? 1 : LINES - 3;
-
     move(y, COLS / 2 - len / 2);
-    attron(COLOR_PAIR(COLOR_GRAY));
+
+    /* Sur la bande d'entrée les valeurs déjà lues sont grisées */
+    if (is_entree) attron(COLOR_PAIR(COLOR_GRAY));
 
     for (i = 0; i < len; i++)
     {
@@ -278,9 +277,10 @@ void draw_bands(ram *r, liste l, int is_entree)
             flg = 1;
         }
 
+        /* On marque la valeur qui sera lue après par un ^ en dessous */
         if (nb_spaces == r -> idx_e && flg)
         {
-            attroff(COLOR_PAIR(COLOR_GRAY));
+            if (is_entree) attroff(COLOR_PAIR(COLOR_GRAY));
             tmp = getcurx(stdscr);
 
             /* Pour le 1er il ne faut pas décaler d'un */
@@ -292,6 +292,7 @@ void draw_bands(ram *r, liste l, int is_entree)
         }
         addch(l_str[i]);
     }
+    if (is_entree) attroff(COLOR_PAIR(COLOR_GRAY));
 
     free(l_str);
 }
@@ -398,7 +399,7 @@ void draw_infos(ram *r)
  * 
  * Permet également de savoir quand il faut mettre à jour l'affichage:
  * en effet, suite au problème avec le traitement de SIGWINCH mentionné
- * dans rsend_update_ui_sig, on simule le redimensionnement de la 
+ * dans send_update_ui_sig, on simule le redimensionnement de la 
  * fenêtre via `resizeterm`, et lorsque ncurses traite ce changement, 
  * il envoie un caractère (KEY_RESIZE) qui sera donc détecté par le 
  * is_keypressed() (puis par le getch()).
@@ -453,10 +454,13 @@ void handle_keypresses(int *loop, ram *r)
 
 
 
-void launch(char *e, char *filename)
+/**
+ * @brief Lance la simulation en mode classique (i.e avec l'UI).
+ * 
+ * @param r 
+ */
+void launch(ram *r)
 {
-    ram *r = init_ram(e);
-    r -> nb_instr = lire_fichier(filename, r -> instructions);
     liste cpy_e = copy_liste(r -> entree.start);
 
 
@@ -471,8 +475,6 @@ void launch(char *e, char *filename)
     
     WINDOW *instr_w = newwin(LINES - (3 + 2 + 1), w_width, 3, 3);
     WINDOW *mem_w = newwin(LINES - (3 + 2 + 1), w_width, 3, COLS - 3 - w_width);
-    update_ui(r, instr_w, mem_w, cpy_e);
-    napms(r -> delay);  /* Pour avoir le temps de voir la 1ère */
 
     pthread_create(&exec_thread_id, NULL, launch_simu_thread, r);
 
@@ -490,5 +492,23 @@ void launch(char *e, char *filename)
     endwin();
 
     free_liste(cpy_e);
-    free_ram(r);
+}
+
+
+
+/**
+ * @brief Lance la simulation en mode minimal.
+ * On affichera seulement le contenu de l'ACC et la bande de sortie.
+ * 
+ * @param r 
+ */
+void launch_minimal(ram *r)
+{
+    int loop = 1;
+    while (loop) evaluer_instr(r, &loop);
+
+    printf("À la fin de l'exécution:\n");
+    printf("ACC: %d\n", r -> memoire[0]);
+    printf("Bande de sortie: ");
+    print_liste(r -> sortie.start, 1);
 }

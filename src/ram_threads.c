@@ -19,6 +19,10 @@ void *launch_simu_thread(void *data)
 
     signal(SIGUSR1, handle_pause);
     signal(SIGUSR2, handle_next_instr);
+
+    /* Pour avoir le temps de voir la 1ère instruction */
+    send_update_ui_sig();
+    napms(r -> delay);
     
     int loop = 1;
     while(loop)
