@@ -6,8 +6,8 @@ INCLUDE := ./include
 BIN_PATH := ~/.local/bin
 
 
-C_FLAGS := -I $(INCLUDE) -Wall -g -Wuninitialized
-C_LIBS := -lncurses -lm
+C_FLAGS := -I $(INCLUDE) -Wall -g
+C_LIBS := -lncurses -lm -lpthread
 
 C_FILES := $(wildcard $(SRC)/*.c)
 HEADERS := $(wildcard $(INCLUDE)/*.h)

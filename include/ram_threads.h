@@ -7,7 +7,7 @@
 /*
  * On utilisera 2 threads:
  *  - 1 qui s'occupera exclusivement de la simulation de la machine RAM.
- *    Il s'occupera de lire le fichier d'entrée et exécuter le programme
+ *    Il s'occupera d'exécuter le programme
  *  - l'autre s'occupera de tout ce qui est lié aux entrées-sorties:
  *    Principalement l'affichage et la gestion des raccourcis clavier.
  * 
