@@ -1,0 +1,43 @@
+# Ceci est un commentaire, notons qu'on peut laisser des lignes vides:
+
+// Un autre commentaire
+/* Et un autre */
+
+? En réalité, si le premier caractère non-blanc (= pas un espace ou une
+? tabulation) de la ligne n'est pas un caractère alphabétique, alors la
+? ligne est un commentaire et sera donc ignorée.
+
+########################################################################
+# ALGO: Minimum                                                        #
+# Lit toutes les valeurs situées sur la bande d'entrée et affiche      #
+# la + petite suivie de sa position (indexée depuis 0).                #
+########################################################################
+
+# Initialisation
+LOAD #0;
+STORE 1;	    R[1] contiendra l'indice du min
+STORE 2;	    R[2] contiendra l'indice lu actuellement
+STORE 3;	    R[3] contiendra la valeur du min
+
+# Lecture de la bande d'entrée
+READ;
+JUMZ 19;        # Pour gérer la bande ne contenant que 0
+    # On peut tabuler les JUMP pour + de lisibilité
+    STORE 3;
+    INC 2;
+    READ;
+    JUMZ 19;
+        STORE 4;    R[4] contient la valeur lue actuellement
+        SUB 3;
+        JUMG 17;    Si R[4] - R[3] < 0 alors R[4] < R[3]
+        LOAD 2;
+        STORE 1;
+        LOAD 4;
+        STORE 3;
+        INC 2;
+        JUMP 8;
+LOAD 3;
+WRITE;
+LOAD 1;
+WRITE;
+STOP;

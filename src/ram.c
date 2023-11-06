@@ -244,8 +244,7 @@ void lire_ligne(char *line, int nb_line, instruction *instr)
 
 
     /* On essaye de lire le type d'adressage */
-    i = sscanf(line, "%*s %[@# ] %*d", buff);
-    if (i == 1)
+    if (sscanf(line, "%*s %[@# ] %*d", buff) == 1)
     {
         if (buff[0] != '#' && buff[0] != '@')
         {
@@ -257,8 +256,7 @@ void lire_ligne(char *line, int nb_line, instruction *instr)
     else instr -> type_adr = '~';    /* Adressage direct */
     
     /* Il ne reste plus qu'à lire l'adresse */
-    i = sscanf(line, "%*s%*[#@ ] %d", &(instr -> adr));
-    if (i != 1)
+    if (sscanf(line, "%*s%*[#@ ] %d", &(instr -> adr)) != 1)
     {
         quit(E_SYNTAX, 0, "Ligne %d: Adresse non-spécifiée", nb_line);
     }
