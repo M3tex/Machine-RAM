@@ -5,6 +5,7 @@ Cette nouvelle version sera principalement utilisée dans le cadre du
 module d'I53.\
 La partie d'entrée sortie est gérée avec la librairie [`ncurses`][ncurses]
 
+![Image de l'affichage du programme][exemple_ui]
 
 
 
@@ -42,3 +43,4 @@ Les raccourcis clavier qui sont implémenté pour l'instant sont:
 
 [RAM]: https://zanotti.univ-tln.fr/ALGO/I31/MachineRAM.html
 [ncurses]: https://invisible-island.net/ncurses/
+[exemple_ui]: examples/ui_example.png
