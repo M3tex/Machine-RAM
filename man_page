@@ -1,0 +1,79 @@
+.\" Manpage for ram.
+.\" Contact mathis-sedkaoui@etud.univ-tln.fr to correct errors or typos.
+.TH RAM 1 "18 Décembre 2023" "0.1"
+.SH NAME
+ram \- Un petit interprète de machine RAM.
+.SH SYNOPSIS
+ram [\fB-e\fR \fIbande_entrée\fR] [\fB-m\fR | \fB--minimal\fR] [\fB-h\fR]
+    [\fB-p\fR[=\fIligne\fR] | \fB--paused\fR[=\fIligne\fR]]
+\fIfichier.ram\fR
+.SH DESCRIPTION
+Cet interprète de machine RAM écrit en C permet de visualiser en temps réel
+l'exécution de code RAM depuis la ligne de commande. Il est également possible
+de ne pas visualiser l'éxécution et de simplement afficher le résultat, via
+l'option \fB-m\fR.
+.PP
+Le \fIfichier.ram\fR passé en paramètre doit respecter la syntaxe suivante:
+    - Une ligne ne doit pas faire plus de 1024 caractères.
+    - Une seule instruction par ligne
+    - Une instruction peut-être précédée de 0, 1 ou plusieurs espaces/tabulations
+afin de rendre possible une forme d'indentation (pour rendre plus lisible les
+blocs de \fBJUMP\fR par exemple).
+    - Le type d'adressage doit-être séparé de l'instruction par 1 ou plusieurs
+espaces.
+    - L'adresse peut-être séparée du type d'adressage par 0, 1 ou plusieurs espaces.
+    - Tout ce qui est situé à droite d'un \fB;\fR sur la même ligne qu'une
+instruction est un commentaire.
+    - Il peut y avoir des lignes vides *
+    - Toutes les lignes commençant par un caractère non-alphabétique autre qu'un
+espace ou une tabulation est un commentaire *
+.sp
+* \fBAttention\fR: les lignes vides/commentaires ne comptent \fBpas\fR dans le
+calcul du nombre d'instruction.
+.sp
+La liste des instructions et de plus amples explications peuvent-être trouvées
+à cette adresse:
+
+.sp
+https://zanotti.univ-tln.fr/ALGO/I31/MachineRAM.html
+
+.SH OPTIONS
+.PP
+.IP "\fB-h\fR" 4
+.IX Item "-h"
+Affiche une petite aide dans la ligne de commande.
+
+.IP "\fB-m\fR, \fB--minimal\fR" 4
+.IX Item "-m, --minimal"
+N'affiche pas l'UI et affiche seulement le résultat du programme (contenu de
+l'ACC et bande de sortie).
+
+.IP "\fB-e\fR \fIbande_entrée\fR" 4
+.IX Item "-e bande_entrée"
+Permet de spécifier le contenu de la bande d'entrée (vide par défaut).
+Les entiers peuvent-être séparés par des espaces ou des virgules.
+.sp
+Par exemple: ram -e "1 2 3" fichier.ram ou bien ram -e "1, 2, 3" fichier.ram
+
+.IP "\fB-p\fR, \fB--paused\fR [=\fIligne\fR]" 4
+.IX Item "-p, --paused [=ligne]"
+Permet de mettre en pause l'exécution à la ligne spécifiée (0 par défaut). Ne
+fonctionne que si l'exécution se fait en mode visuel (sans \fB-m\fR).
+.sp
+Par exemple, ram fichier.ram -p=5 mettra en pause l'exécution à la 5ème ligne.
+De même pour ram fichier.ram --paused=5
+
+.SH BUGS & TODO
+Bugs:
+    En mode visuel, il peut y avoir des instructions "manquées".
+    Lorsque l'on passe à 0ms de délai, il est impossible de reprendre la main.
+ToDo:
+    - Trouver un moyen d'ignorer les "fuites mémoires" détectées par valgrind et
+liées à ncurses (pour vérifier s'il y a des fuites mémoires dans le programme).
+    - Nettoyer un peu le code
+    - Ne plus utiliser de signaux pour la communication entre les 2 threads et
+passer par une autre méthode (file de message ?)
+    - Rajouter des couleurs pour la "coloration syntaxique"
+
+.SH AUTHOR
+Mathis Sedkaoui (mathis-sedkaoui@etud.univ-tln.fr)
