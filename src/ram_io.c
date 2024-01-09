@@ -11,7 +11,7 @@
 
 static int need_refresh;
 pthread_t exec_thread_id;
-
+int thread_is_running = 0;
 
 /**
  * @brief Initialise toutes les fonctions de ncurses nécessitant une
@@ -149,10 +149,10 @@ void draw_instr_window(WINDOW *w, ram *r)
     /* Pour faire défiler si trop d'instructions */
     int i = 0;
     int scroll = height;
-    while (co >= scroll)
+    while (co > scroll)
     {
         i += height;
-        scroll *= 2;
+        scroll += height;
     }
 
 
@@ -234,7 +234,7 @@ void draw_mem_window(WINDOW *w, ram *r)
      */
     int i = 1;
     int cpt = 1;
-    while (i < MEM_SIZE && cpt < height)
+    while (i < MEM_SIZE && cpt < height - 1)
     {
         if (r -> memoire[i] != INT_MIN)
         {
@@ -477,6 +477,7 @@ void launch(ram *r)
     WINDOW *mem_w = newwin(LINES - (3 + 2 + 1), w_width, 3, COLS - 3 - w_width);
 
     pthread_create(&exec_thread_id, NULL, launch_simu_thread, r);
+    thread_is_running = 1;
 
     int loop = 1;
     while (loop)
@@ -485,7 +486,7 @@ void launch(ram *r)
         handle_keypresses(&loop, r);
     }
 
-    pthread_cancel(exec_thread_id);
+    if (thread_is_running) pthread_cancel(exec_thread_id);
     
     delwin(instr_w);
     delwin(stdscr);

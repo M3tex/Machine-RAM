@@ -93,27 +93,13 @@ void quit(int exit_code, int use_perror, char *fmt, ...)
 void print_help()
 {
     printf("Utilisation: ");
-    printf("ram [-hm] [-e bande-entree] nom_fichier.ram\n\n");
+    printf("ram [-hm] [-e bande-entree] [-p[=void handle_options(int argc, char **argv)void handle_options(int argc, char **argv)ligne]] nom_fichier.ram\n\n");
 
     printf("-h Affiche cette aide\n");
-    printf("-m Affichage 'minimal' (ACC + bande de sortie)\n");
-
+    printf("-m (ou --minimal) affichage 'minimal' (ACC + bande de sortie)\n");
+    printf("-p (ou --paused) met en pause à la ligne passé en paramètre (0 par défaut)\n");
     printf("-e Pour spécifier le contenu de la bande d'entrée\n");
     printf("Les entiers de la bande d'entrée doivent être ");
     printf("séparés par des espaces ou des virgules.\n");
     printf("Par exemple: ram -e '10, 12, 9, 17, 0' moyenne.ram\n\n");
-
-    printf("Le fichier.ram doit respecter la syntaxe suivante:\n");
-    printf("- une ligne ne doit pas faire + de 1024 caractères\n");
-    printf("- une seule instruction par ligne\n");
-    printf("- le type d'adressage doit être séparé de l'instruction par"
-           " au moins un espace (il peut y en avoir plusieurs)\n");
-    printf("- l'adresse peut-être collée au type d'adressage, ou bien "
-           "séparée de ce dernier par un ou plusieurs espaces\n");
-    printf("- tout ce qui est situé à droite d'un `;` sur la même ligne" 
-           " qu'une instruction est un commentaire\n");
-    printf("- il peut y avoir des lignes vides\n");
-    printf("- toutes les lignes commençant par un caractère "
-           "non-alphabétique autre qu'un espace ou une tabulation est "
-           "un commentaire\n");
 }

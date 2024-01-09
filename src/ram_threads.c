@@ -9,6 +9,8 @@
 static int is_paused;
 static int exec_next_instr;
 
+extern int thread_is_running;
+
 
 void *launch_simu_thread(void *data)
 {
@@ -27,6 +29,14 @@ void *launch_simu_thread(void *data)
     int loop = 1;
     while(loop)
     {
+        if (r->pause_at == r->compteur_ord)
+        {
+            is_paused = 1;
+            
+            /* Seulement la 1ère fois */
+            r->pause_at = -1;
+        }
+
         if (!is_paused)
         {
             evaluer_instr(r, &loop);
@@ -39,9 +49,10 @@ void *launch_simu_thread(void *data)
             exec_next_instr = 0;
 
             send_update_ui_sig();
-        }   
+        }
     }
 
+    thread_is_running = 0;
     return NULL;
 }
 

@@ -13,9 +13,9 @@
  * prendra 0.26 Mo en mémoire sur la plupart des machines où les int
  * sont codés sur 4 octets.
  */
-#define MEM_SIZE USHRT_MAX
+#define MEM_SIZE USHRT_MAX + 1
 #define NB_INSTR 17
-#define DFT_PROG_SIZE 500
+#define DFT_PROG_SIZE USHRT_MAX
 
 
 /*
@@ -96,6 +96,9 @@ typedef struct {
 
     /* Délai en ms entre l'exécution de 2 instructions */
     int delay;
+
+    /* Si jamais il faut mettre en pause dès le début */
+    int pause_at;
 
     bande entree;
     bande sortie;

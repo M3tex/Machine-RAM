@@ -416,7 +416,7 @@ void evaluer_instr(ram *r, int *boucle)
 
     case STOP:  /* Arrête le programme */
         *boucle = 0;
-        break;
+        return;
     
     case NOP:   /* Ne fait rien */
         break;
